@@ -10,8 +10,8 @@ function getRepoContributors(repoOwner, repoName, cb) {
     url: `https://api.github.com/repos/${repoOwner}/${repoName}/contributors`,
     headers: {
       'User-Agent': 'request',
-      Authorization: token.GITHUB_TOKEN,
-    },
+      Authorization: token.GITHUB_TOKEN
+    }
   };
 
   request(options, function(err, res, body) {
@@ -19,7 +19,7 @@ function getRepoContributors(repoOwner, repoName, cb) {
   });
 }
 
-function downloadImageByURL(url, filePath){
+function downloadImageByURL(url, filePath) {
   request
     .get(url)
     .on('error', function(err) {
@@ -29,7 +29,6 @@ function downloadImageByURL(url, filePath){
       console.log(`\nDownloading ${url}`);
     })
     .pipe(fs.createWriteStream(filePath));
-
 }
 // check if argument was passed
 if (input.length !== 0) {
@@ -37,8 +36,7 @@ if (input.length !== 0) {
     const avatars = result;
     console.log('Errors:', err);
     for (let el of avatars) {
-      var filePath = `avatars/${el['login']}.jpg`;
-      fs.createWriteStream(filePath);
+      const filePath = `avatars/${el['login']}.jpg`;
       downloadImageByURL(el['avatar_url'], filePath);
     }
   });
