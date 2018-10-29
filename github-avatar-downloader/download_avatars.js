@@ -1,6 +1,7 @@
 var request = require('request');
 var token = require('./secrets');
 var fs = require('fs');
+var input = process.argv.slice(2);
 console.log('Welcome to the GitHub Avatar Downloader!');
 
 function getRepoContributors(repoOwner, repoName, cb) {
@@ -34,8 +35,8 @@ function downloadImageByURL(url, filePath) {
     })
     .pipe(fs.createWriteStream(filePath));
 }
-
-getRepoContributors('jquery', 'jquery', function(err, result) {
+if(input.length !== 0){
+getRepoContributors(input[0], input[1], function(err, result) {
   let avatars = result;
   console.log('Errors:', err);
   for (let el of avatars) {
@@ -44,3 +45,8 @@ getRepoContributors('jquery', 'jquery', function(err, result) {
     downloadImageByURL(el['avatar_url'], filePath);
   }
 });
+}
+
+else{
+  throw 'Incorrect number of arguments. Provide repo owner and repo name';
+}
